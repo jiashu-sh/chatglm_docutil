@@ -203,7 +203,7 @@ class Utils():
         return cnt_text
     
     # 获取GLM对话结果
-    def LlmConversation(self,sContent="你好",his=[],cnt_id="", sToken="",iTemplateType=0) :
+    def LlmConversation(self,sContent="你好",his=[],cnt_id="", sToken="",iTemplateType=0,bSaveDbLog=False) :
         """_summary_
         获取GLM对话结果
         Args:
@@ -216,7 +216,7 @@ class Utils():
         sTxt = ""
         # 使用Glm获取对话内容------------------------------
         glmapi = GlmApi() #使用GlmApi
-        sTxt = glmapi.LlmConversation(sContent=sContent,his=his,cnt_id=cnt_id, sToken=sToken,iTemplateType=iTemplateType) #,iTemplateType=1 详细描述内容
+        sTxt = glmapi.LlmConversation(sContent=sContent,his=his,cnt_id=cnt_id, sToken=sToken,iTemplateType=iTemplateType,bSaveDbLog=bSaveDbLog) #,iTemplateType=1 详细描述内容
         return sTxt
     
     # 获取GLM对话结果

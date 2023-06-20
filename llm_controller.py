@@ -15,10 +15,10 @@ class Controller():
         sReturn = "version:{0} , host:{1}".format(sVersion,self.host)
         return sReturn
     
-    def LlmConversation(self,sTxt,iTemplateType=-1) :
+    def LlmConversation(self,sTxt,iTemplateType=-1,bSaveDbLog=True) :
         sReturn = ""
         cnt_id = str(uuid.uuid1())
-        sReturn = utils.LlmConversation(sTxt,his=[],cnt_id=cnt_id, sToken=cnt_id,iTemplateType=-1) #,iTemplateType=-1 无指令，直接对话
+        sReturn = utils.LlmConversation(sTxt,his=[],cnt_id=cnt_id, sToken=cnt_id,iTemplateType=-1,bSaveDbLog=bSaveDbLog) #,iTemplateType=-1 无指令，直接对话
         sLog = sTxt
         sLog += "\n" + "-------------------------------------------------------------------"
         sLog += "\n" + sReturn

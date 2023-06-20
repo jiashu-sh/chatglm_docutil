@@ -39,7 +39,7 @@ class GlmApi():
     #     print("LlmCallback : " + token_code)
     #     return token_code
 
-    def LlmConversation(self,sContent="你好",his=[],cnt_id="", sToken="",iTemplateType=0,bPrintText = False): #, func_llm_call_back=LlmCallback()
+    def LlmConversation(self,sContent="你好",his=[],cnt_id="", sToken="",iTemplateType=0,bSaveDbLog=False,bPrintText = False): #, func_llm_call_back=LlmCallback() ,bSaveDbLog=False 默认不保存db
         # iTemplateType=0 : 表示默认prompt，详细描述 ，iTemplateType=-1、0、1、2、3、4、 9 表示 不指定命令直接 概述列提纲、详细描述、概括、提取搜索关键字、参考资料进行写作、  意图分析
         txt_resp = "."
         resp_uuid = str(uuid.uuid1()) # 每轮对话生成一个resp_uuid
@@ -141,12 +141,13 @@ class GlmApi():
         txt_resp = result["response"]
         txt_his = result["history"]
         
-        # 数据库操作：记录对话内容-------------------------------------------------------------
-        dbconn = DbConnection()
-        confirm_token = dbconn.InsertLlmResp(txt_req,txt_resp,str(txt_his),cnt_id, resp_uuid, token_code=sToken) #,token_code="",user_id=0
-        # -----------------------------------------------------------------------------------
-        if bPrintText :
-            print("3. db insert (LlmConversation) - {} ,confirm_token:{}".format(str(datetime.datetime.now()) ,confirm_token))
+        if bSaveDbLog :
+            # 数据库操作：记录对话内容-------------------------------------------------------------
+            dbconn = DbConnection()
+            confirm_token = dbconn.InsertLlmResp(txt_req,txt_resp,str(txt_his),cnt_id, resp_uuid, token_code=sToken) #,token_code="",user_id=0
+            # -----------------------------------------------------------------------------------
+            if bPrintText :
+                print("3. db insert (LlmConversation) - {} ,confirm_token:{}".format(str(datetime.datetime.now()) ,confirm_token))
         
         return txt_resp
     
