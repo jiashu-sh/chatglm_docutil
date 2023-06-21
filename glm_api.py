@@ -105,6 +105,13 @@ class GlmApi():
             {question_description}
             ”
             """
+        elif iTemplateType == 6 :
+            prompt_template = """
+            对以下内容进行内容修改整理，确保内容连贯性：
+            “
+            {question_description}
+            ”
+            """
         elif iTemplateType == 9 :
             prompt_template = """
             意图分析：

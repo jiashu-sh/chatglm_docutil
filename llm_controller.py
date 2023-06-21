@@ -212,6 +212,7 @@ class Controller():
         sSetpDesc = "-- 10. setp by step generate ......"
         print(sSetpDesc)
         paras = utils.SplitParagraphs(sTxt,0)
+        lstContent = []
         for index in range(len(paras)) :
             print("--------------------------------------")
             # print(paras[index])
@@ -255,6 +256,7 @@ class Controller():
                 sTxt += extResult[0]
             else : # 不用搜索，直接根据提纲扩写
                 sLlmConversationResult = utils.LlmConversation(sExtendPara,his=[[qHis,aHis]],cnt_id=cnt_id, sToken=token_code,iTemplateType=5) #,iTemplateType=5 对以下内容进行扩展
+                lstContent.append(sLlmConversationResult) # 将内容加入list中
                 sLog += sExtendPara + "\r\n"
                 sLog += "......................................................................." + "\r\n"
                 sLog += sLlmConversationResult
@@ -263,8 +265,26 @@ class Controller():
                 sTxt += "......................................................................." + "\r\n"
                 sTxt += sLlmConversationResult
         
+        # --------------------------------------------------------------------------------------
+        bSortText = False # 目前测试下来效果不行
+        if bSortText:
+            iLstLength = len(lstContent)
+            sSortedTxt="" # 下一步，对故事再进行全文整理，加强每一个段落之间的关联性
+            for index in range(len(lstContent)):
+                index2 = index + 1
+                if index2 >= iLstLength :
+                    break
+                    # sSortedTxt = "***" + "\n" + lstContent[index]
+                
+                print("sorting p{} and p{} : ".format(index,index2))
+                sTemp = lstContent[index] + "\n" + lstContent[index2]
+                sSortingLlmConversationResult = utils.LlmConversation(sExtendPara,his=[],cnt_id=cnt_id, sToken=token_code,iTemplateType=6) #,iTemplateType=6 整理内容 [qHis,sTxtSummary]
+                sSortedTxt += "***" + "\n" + sSortingLlmConversationResult
+        # --------------------------------------------------------------------------------------
+        
         utils.SaveLog(sLog)
         utils.SaveLog(sTxt,log_filename="m-return-text-log")
+        utils.SaveLog(sSortedTxt,log_filename="m-sorting-text-log")
         sContent = sTxt
         
         return sContent
